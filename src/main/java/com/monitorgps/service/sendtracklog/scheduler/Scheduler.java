@@ -26,6 +26,7 @@ public class Scheduler {
         cal.set(Calendar.MINUTE,cal.get(Calendar.MINUTE)-1);
         System.out.println(cal.getTime());
         System.out.println(dateFormat.format(cal.getTime()));
+        //tracklogService.sendTracklogByMinute(dateFormat.format(cal.getTime()));
         //tracklogService.sendTracklog();
 
     }
