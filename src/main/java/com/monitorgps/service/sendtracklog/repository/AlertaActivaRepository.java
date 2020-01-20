@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-public interface AlertaActivaRepository  {
+@Repository
+public interface AlertaActivaRepository extends JpaRepository<AlertaEntity,Long> {
+
     @Query(value = "select v.num_placa as placa, TO_CHAR(a.fec_registro,'YYYY-MM-DD') as fechaEvento, to_char(a.fec_registro, 'HH24:MI:SS') as horaEvento, " +
             "r.coord_x as latitud, r.coord_y as longitud, " +
             "case a.id_alerta when 3 then 540 when 4 then 501 when 34 then 500 when 55 then 170 end as evento, " +
