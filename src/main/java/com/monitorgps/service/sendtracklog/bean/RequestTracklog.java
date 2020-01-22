@@ -13,7 +13,7 @@ public class RequestTracklog {
     private String horaEvento;
     private String latitud;
     private String longitud;
-    private int direccion;
-    private int velocidad;
-    private String evento;
+    private Double direccion;
+    private Double velocidad;
+    private int evento;
 }

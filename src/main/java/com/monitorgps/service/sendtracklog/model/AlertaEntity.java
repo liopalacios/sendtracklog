@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Table(name = "tb_alerta")
@@ -17,9 +15,12 @@ import java.io.Serializable;
 public class AlertaEntity implements Serializable {
     private static final long serialVersionUID = 3L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "tb_alerta_id_alerta_seq")
     @Column(name = "id_alerta")
     private Long id;
 
     @Column(name = "des_alerta")
     private String descripcion;
+
 }
