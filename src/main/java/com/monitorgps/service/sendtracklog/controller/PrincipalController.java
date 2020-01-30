@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/")
 public class PrincipalController {
@@ -20,7 +22,7 @@ public class PrincipalController {
         return companyEntities;
     }*/
     @RequestMapping(value = {"/sendTracklog"}, method = RequestMethod.GET)
-    public ListResponseTracklogs sendTracklog(){
+    public ListResponseTracklogs sendTracklog() throws IOException {
         ListResponseTracklogs responseTracklogs = tracklogService.sendTracklog();
 
         return responseTracklogs;

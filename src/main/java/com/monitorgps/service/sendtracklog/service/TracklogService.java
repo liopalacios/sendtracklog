@@ -1,12 +1,13 @@
 package com.monitorgps.service.sendtracklog.service;
 
 import com.monitorgps.service.sendtracklog.bean.ListResponseTracklogs;
-import com.monitorgps.service.sendtracklog.bean.ResponseTracklog;
 
-import java.util.List;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 
 public interface TracklogService {
-    ListResponseTracklogs sendTracklog();
+    ListResponseTracklogs sendTracklog() throws IOException;
 
-    void sendTracklogByMinute(String format);
+    void sendTracklogByMinute(Date format, Date s) throws IOException, ParseException;
 }

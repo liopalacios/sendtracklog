@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Table(name = "tb_recorrido")
 @Data
@@ -26,10 +27,20 @@ public class RecorridoEntity implements Serializable {
     @Column(name = "coord_y")
     private String longitud;
 
+    @OneToOne
+    @JoinColumn(name="id_vehiculo")
+    private VehiculoEntity vehiculo;
+
     @Column(name = "vel_recorrido")
     private Double velocidad;
 
     @Column(name = "grados")
     private Double orientacion;
+
+    @Column(name = "fec_enviado_tracklog")
+    private Date fechaenviado;
+
+    @Column(name="fec_recorrido")
+    private Date fecreg;
 
 }
