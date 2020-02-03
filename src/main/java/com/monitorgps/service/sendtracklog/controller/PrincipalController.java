@@ -15,12 +15,7 @@ public class PrincipalController {
 
     @Autowired
     TracklogService tracklogService;
-    /*
-    @RequestMapping(value = {"/companies"}, method = RequestMethod.GET)
-    public List<CompanyEntity> registrarPaymentVoucher(){
-        List<CompanyEntity> companyEntities = companyService.listCompany();
-        return companyEntities;
-    }*/
+
     @RequestMapping(value = {"/sendTracklog"}, method = RequestMethod.GET)
     public ListResponseTracklogs sendTracklog() throws IOException {
         ListResponseTracklogs responseTracklogs = tracklogService.sendTracklog();

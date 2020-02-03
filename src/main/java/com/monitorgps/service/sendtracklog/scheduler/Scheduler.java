@@ -27,13 +27,8 @@ public class Scheduler {
         cal.setTime(new Date());
         ayer.setTime(new Date());
         ayer.set(Calendar.DATE,ayer.get(Calendar.DATE)-1);
-       // System.out.println(cal.getTime());
-       // System.out.println(ayer.getTime());
         cal.set(Calendar.MINUTE,cal.get(Calendar.MINUTE)-1);
-      //  System.out.println(cal.getTime());
-       // System.out.println(dateFormat.format(cal.getTime()));
         tracklogService.sendTracklogByMinute(cal.getTime(),ayer.getTime());
-        //tracklogService.sendTracklog();
 
     }
 }

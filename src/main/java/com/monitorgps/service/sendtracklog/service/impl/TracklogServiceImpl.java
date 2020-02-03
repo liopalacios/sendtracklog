@@ -33,6 +33,9 @@ public class TracklogServiceImpl implements TracklogService {
     @Value("${ruta_logs}")
     private String carpetaLog;
 
+    @Value("${api_tracklog}")
+    private String apitracklog;
+
     @Autowired
     AlertaActivaRepository alertaActivaRepository;
 
@@ -40,7 +43,6 @@ public class TracklogServiceImpl implements TracklogService {
 
     @Override
     public ListResponseTracklogs sendTracklog() {
-        final String uri = "http://190.12.73.86/json/json_receive.php";
 
         RequestTracklog requestTracklog =
                 new RequestTracklog("V9J-846","2019-10-01","17:28:55","-14.56789","17.34567",310.00,16.00,2);
@@ -48,18 +50,10 @@ public class TracklogServiceImpl implements TracklogService {
         List<RequestTracklog> requestTracklogs = new ArrayList<>();
         requestTracklogs.add(requestTracklog);
         ListRequestTracklogs listRequestTracklogs = new ListRequestTracklogs(requestTracklogs);
-
-        System.out.print("\n"+listRequestTracklogs+"\n");
-
-        ResponseEntity<String> str = restTemplate.postForEntity(uri,listRequestTracklogs, String.class);
-        //String str = restTemplate.postForObject(uri,listRequestTracklogs, String.class);
-        System.out.print(str+"\n");
-        System.out.print(str.getStatusCode()+"\n");
-        System.out.print(str.getStatusCodeValue()+"\n");
+        ResponseEntity<String> str = restTemplate.postForEntity(apitracklog,listRequestTracklogs, String.class);
         Gson gson = new Gson();
         ListResponseTracklogs listResponseTracklogs = gson.fromJson(str.getBody(),ListResponseTracklogs.class);
         if(str.getStatusCodeValue()==200) {
-            System.out.println("EL ENVIO FUE CORRECTO");
             System.out.println(listResponseTracklogs);
         }
         log.info(str.getBody());
@@ -68,29 +62,19 @@ public class TracklogServiceImpl implements TracklogService {
 
     @Override
     public void sendTracklogByMinute(Date format, Date s) throws IOException, ParseException {
-        final String uri = "http://190.12.73.86/json/json_receive.php";
 
         List<Object[]> objects = alertaActivaRepository.getListEventsByMinute(format,s);
-
         List<RequestTracklog> requestTracklogsObj = converterObjectToPojo(objects);
-       // System.out.println(requestTracklogsObj);
 
         RestTemplate restTemplate = new RestTemplate();
-
         ListRequestTracklogs listRequestTracklogs = new ListRequestTracklogs(requestTracklogsObj);
 
-        //System.out.print("\n"+listRequestTracklogs+"\n");
-
-        ResponseEntity<String> str = restTemplate.postForEntity(uri,listRequestTracklogs, String.class);
+        ResponseEntity<String> str = restTemplate.postForEntity(apitracklog,listRequestTracklogs, String.class);
 
 
             if(str.getStatusCodeValue()==200){
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-DD HH:mm:ss").create();
             ListResponseTracklogs listResponseTracklogs = gson.fromJson(str.getBody(),ListResponseTracklogs.class);
-
-          //  System.out.println("EL ENVIO FUE CORRECTO "+format);
-         //   System.out.println(listResponseTracklogs.getRecibidos().size());
-            // System.out.println(listRequestTracklogs);
             String Archivo=carpetaLog+Constantes.N0MBRE_DOCUMENTO+Constantes.SEPARADOR_EPACIO+UtilFormat.formatoFecha(new Date())+Constantes.TIPO_DOCUMENTO;
 
             FileWriter log =new FileWriter(Archivo,true);
@@ -98,10 +82,8 @@ public class TracklogServiceImpl implements TracklogService {
             log.write(str.getBody()+"\n"+"\n");
             log.close();
             for (ResponseTracklog response : listResponseTracklogs.getRecibidos() ) {
-              // System.out.println(response.getFecha_Hora());
-             //   System.out.println(dateFormat.format(response.getFecha_Hora()));
                 alertaActivaRepository.getUpdateByMinute(response.getFecha_Hora(),dateFormat.format(response.getFecha_Hora()),response.getPlaca());
-                //System.out.println(response.getFecha_Hora());
+
             }
         }
         else
@@ -112,8 +94,7 @@ public class TracklogServiceImpl implements TracklogService {
             errlog.close();
 
         }
-        //log.info(str.getBody());
-        //return null;
+
     }
 
     private List<RequestTracklog> converterObjectToPojo(List<Object[]> objects) {
